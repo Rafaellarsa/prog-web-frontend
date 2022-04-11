@@ -1,0 +1,45 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Camisa",
+            "image": "../placeholders/products/camisa.png",
+            "category": 1,
+            "quantity": 47,
+            "price": 19.90
+        },
+        {
+            "id": 2,
+            "name": "Cama",
+            "image": "../placeholders/products/cama.png",
+            "category": 3,
+            "quantity": 2,
+            "price": 1015.90
+        },
+        {
+            "id": 3,
+            "name": "Celular",
+            "image": "../placeholders/products/celular.png",
+            "category": 4,
+            "quantity": 20,
+            "price": 1099.90
+        },
+        {
+            "id": 4,
+            "name": "Canetas",
+            "image": "../placeholders/products/canetas.png",
+            "category": 2,
+            "quantity": 50,
+            "price": 6.90
+        },
+        {
+            "id": 5,
+            "name": "Caneca",
+            "image": "../placeholders/products/caneca.png",
+            "category": 3,
+            "quantity": 12,
+            "price": 24.90
+        }
+    ],
+    "quantity": 5
+}
