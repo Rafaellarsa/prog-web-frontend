@@ -5,6 +5,7 @@
             "name": "Camisa",
             "image": "../placeholders/products/camisa.png",
             "category": 1,
+            "categoryName": "Vestuário",
             "quantity": 47,
             "price": 19.90
         },
@@ -13,6 +14,7 @@
             "name": "Cama",
             "image": "../placeholders/products/cama.png",
             "category": 3,
+            "categoryName": "Casa",
             "quantity": 2,
             "price": 1015.90
         },
@@ -21,6 +23,7 @@
             "name": "Celular",
             "image": "../placeholders/products/celular.png",
             "category": 4,
+            "categoryName": "Eletrônicos",
             "quantity": 20,
             "price": 1099.90
         },
@@ -29,6 +32,7 @@
             "name": "Canetas",
             "image": "../placeholders/products/canetas.png",
             "category": 2,
+            "categoryName": "Papelaria",
             "quantity": 50,
             "price": 6.90
         },
@@ -37,6 +41,7 @@
             "name": "Caneca",
             "image": "../placeholders/products/caneca.png",
             "category": 3,
+            "categoryName": "Casa",
             "quantity": 12,
             "price": 24.90
         }
