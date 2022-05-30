@@ -16,7 +16,11 @@
 
           <v-card-actions>
             <v-spacer />
-            <v-btn color="primary" @click="isSignUpForm = true">
+            <v-btn
+              color="primary"
+              @click="isSignUpForm = true"
+              :disabled="!signUpInfo.email"
+            >
               Continuar
             </v-btn>
           </v-card-actions>
@@ -45,7 +49,13 @@
 
           <v-card-actions>
             <v-spacer />
-            <v-btn color="primary" @click="onLogin()"> Entrar </v-btn>
+            <v-btn
+              color="primary"
+              @click="onLogin()"
+              :disabled="!(loginInfo.login && loginInfo.senha)"
+            >
+              Entrar
+            </v-btn>
           </v-card-actions>
         </v-col>
       </v-row>
@@ -94,7 +104,9 @@
         <v-btn color="primary" text @click="isSignUpForm = false">
           Voltar
         </v-btn>
-        <v-btn color="primary" @click="onSignUp()"> Cadastrar </v-btn>
+        <v-btn color="primary" @click="onSignUp()" :disabled="isSignUpDisabled">
+          Cadastrar
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -140,6 +152,18 @@ export default {
       }
     },
   },
+  computed: {
+    isSignUpDisabled() {
+      return (
+        !this.signUpInfo.nome ||
+        !this.signUpInfo.endereco ||
+        !this.signUpInfo.email ||
+        !this.signUpInfo.login ||
+        !this.signUpInfo.senha ||
+        !this.passwordConfirmation
+      );
+    },
+  },
   methods: {
     onLogin() {
       axios
@@ -157,11 +181,14 @@ export default {
     },
     onSignUp() {
       if (this.signUpInfo.senha == this.passwordConfirmation) {
+        let data = "";
+        for (let [key, value] of Object.entries(this.signUpInfo)) {
+          data += key + "=" + encodeURIComponent(value) + "&";
+        }
+        data = data.slice(0, -1);
+
         axios
-          .post(
-            "http://localhost:8080/e-commerce/NovoCliente",
-            JSON.stringify(this.signUpInfo)
-          )
+          .post("http://localhost:8080/e-commerce/NovoCliente", data)
           .then((response) => {
             console.log(response);
           })
