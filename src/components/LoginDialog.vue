@@ -142,16 +142,6 @@ export default {
       return pattern.test(value) || "Email inválido.";
     },
   }),
-  watch: {
-    isDialogVisible(newValue) {
-      this.isVisible = newValue;
-    },
-    isVisible(newValue) {
-      if (!newValue) {
-        this.$emit("close-dialog");
-      }
-    },
-  },
   computed: {
     isSignUpDisabled() {
       return (
@@ -164,23 +154,30 @@ export default {
       );
     },
   },
+  watch: {
+    isDialogVisible(newValue) {
+      this.isVisible = newValue;
+    },
+    isVisible(newValue) {
+      if (!newValue) {
+        this.$emit("close-dialog");
+      }
+    },
+  },
   methods: {
     onLogin() {
-        let data = "";
-        for (let [key, value] of Object.entries(this.loginInfo)) {
-          data += key + "=" + encodeURIComponent(value) + "&";
-        }
-        data = data.slice(0, -1);
+      let data = "";
+      for (let [key, value] of Object.entries(this.loginInfo)) {
+        data += key + "=" + encodeURIComponent(value) + "&";
+      }
+      data = data.slice(0, -1);
 
       axios
-        .post(
-          "http://localhost:8081/e-commerce/LoginCliente",
-          data
-        )
+        .post("http://localhost:8080/e-commerce/LoginCliente", data)
         .then((response) => {
           const username = response.data.login;
           const isAdmin = response.data.isAdmin;
-          this.$emit('login', username, isAdmin)
+          this.$emit("login", username, isAdmin);
         })
         .catch((error) => console.log(error))
         .finally(() => {
@@ -196,7 +193,7 @@ export default {
         data = data.slice(0, -1);
 
         axios
-          .post("http://localhost:8081/e-commerce/NovoCliente", data)
+          .post("http://localhost:8080/e-commerce/NovoCliente", data)
           .then((response) => {
             console.log(response);
           })

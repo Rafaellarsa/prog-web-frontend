@@ -9,7 +9,7 @@
 
     <v-tabs-items v-model="tab" class="mt-3">
       <v-tab-item>
-        <v-btn text>
+        <v-btn text @click="isNewProductDialogVisible = true">
           <v-icon aria-label="Mais" color="primary">mdi-plus</v-icon>
           Novo produto
         </v-btn>
@@ -47,7 +47,7 @@
         </v-list>
       </v-tab-item>
       <v-tab-item>
-        <v-btn text>
+        <v-btn text @click="isNewCategoryDialogVisible = true">
           <v-icon aria-label="Mais" color="primary">mdi-plus</v-icon>
           Nova categoria
         </v-btn>
@@ -78,33 +78,44 @@
       </v-tab-item>
       <v-tab-item> Visualizar relatórios gerenciais </v-tab-item>
     </v-tabs-items>
+
+    <NewProductDialog
+      :isDialogVisible="isNewProductDialogVisible"
+      @close-dialog="isNewProductDialogVisible = false"
+    />
+    <NewCategoryDialog
+      :isDialogVisible="isNewCategoryDialogVisible"
+      @close-dialog="isNewCategoryDialogVisible = false"
+    />
   </v-container>
 </template>
 
 <script>
+import axios from "axios";
+
+import NewProductDialog from "./NewProductDialog.vue";
+import NewCategoryDialog from "./NewCategoryDialog.vue";
+
 import productList from "@/placeholders/productList.json";
 import categories from "@/placeholders/categories.json";
 
 export default {
   name: "AdminPage",
+  components: {
+    NewProductDialog,
+    NewCategoryDialog,
+  },
   data: () => ({
     tab: null,
+    isNewProductDialogVisible: false,
+    isNewCategoryDialogVisible: false,
     categories: categories.categories,
     productList: productList.products,
-    folders: [
-      {
-        subtitle: "Jan 9, 2014",
-        title: "Photos",
-      },
-      {
-        subtitle: "Jan 17, 2014",
-        title: "Recipes",
-      },
-      {
-        subtitle: "Jan 28, 2014",
-        title: "Work",
-      },
-    ],
   }),
+  mounted() {
+    axios
+      .get("http://localhost:8080/e-commerce/ListarProdutos")
+      .then((response) => console.log(response.data));
+  },
 };
 </script>
