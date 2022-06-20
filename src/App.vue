@@ -11,12 +11,12 @@
       <v-spacer />
       <span class="mr-2">
         <b
-          >Bem-vindo<span v-if="username">, {{ username }}</span
+          >Bem-vindo<span v-if="user.login">, {{ user.login }}</span
           >! :)</b
         >
         <br />
         <span
-          v-if="!username"
+          v-if="!user.login"
           id="login-link"
           @click="isLoginDialogVisible = true"
         >
@@ -24,14 +24,17 @@
         </span>
         <span v-else id="login-link" @click="logout()"> Sair </span>
       </span>
-      <v-btn v-if="!isAdmin" href="" target="_blank" text>
+      <v-btn v-if="!user.administrador" href="" target="_blank" text>
         <v-icon aria-label="Carrinho de compras">mdi-cart</v-icon>
         0
+      </v-btn>
+      <v-btn v-if="user.login" text @click="isUserDialogVisible = true">
+        <v-icon aria-label="Engrenagem">mdi-cog</v-icon>
       </v-btn>
     </v-app-bar>
 
     <v-main>
-      <AdminPage v-if="isAdmin">blabla</AdminPage>
+      <AdminPage v-if="user.administrador" />
       <ProductList v-else />
     </v-main>
 
@@ -40,33 +43,40 @@
       @close-dialog="isLoginDialogVisible = false"
       @login="onLogin"
     />
+    <UserDialog
+      :isDialogVisible="isUserDialogVisible"
+      :user="user"
+      @close-dialog="isUserDialogVisible = false"
+      @login="onLogin"
+    />
   </v-app>
 </template>
 
 <script>
 import axios from "axios";
 
-import LoginDialog from "./components/Dialogs/LoginDialog.vue";
 import ProductList from "./components/ProductList.vue";
 import AdminPage from "./components/AdminPage.vue";
+import LoginDialog from "./components/Dialogs/LoginDialog.vue";
+import UserDialog from "./components/Dialogs/UserDialog.vue";
 
 export default {
   name: "e-smd",
   components: {
-    AdminPage,
     ProductList,
+    AdminPage,
     LoginDialog,
+    UserDialog,
   },
 
   data: () => ({
     isLoginDialogVisible: false,
-    isAdmin: false,
-    username: null,
+    isUserDialogVisible: false,
+    user: { administrador: false },
   }),
   methods: {
-    onLogin(username, isAdmin) {
-      this.username = username;
-      this.isAdmin = isAdmin;
+    onLogin(user) {
+      this.user = user;
     },
     logout() {
       axios
@@ -76,8 +86,7 @@ export default {
         })
         .catch((error) => console.log(error))
         .finally(() => {
-          this.username = null;
-          this.isAdmin = false;
+          this.user = { administrador: false };
         });
     },
   },

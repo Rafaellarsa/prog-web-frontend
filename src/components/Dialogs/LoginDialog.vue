@@ -175,9 +175,8 @@ export default {
       axios
         .post("http://localhost:8080/e-commerce/LoginCliente", data)
         .then((response) => {
-          const username = response.data.login;
-          const isAdmin = response.data.isAdmin;
-          this.$emit("login", username, isAdmin);
+          const user = response.data.usuario;
+          this.$emit("login", user);
         })
         .catch((error) => console.log(error))
         .finally(() => {
