@@ -46,7 +46,7 @@
 <script>
 import axios from "axios";
 
-import LoginDialog from "./components/LoginDialog.vue";
+import LoginDialog from "./components/Dialogs/LoginDialog.vue";
 import ProductList from "./components/ProductList.vue";
 import AdminPage from "./components/AdminPage.vue";
 

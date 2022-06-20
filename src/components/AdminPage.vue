@@ -13,25 +13,27 @@
           <v-icon aria-label="Mais" color="primary">mdi-plus</v-icon>
           Novo produto
         </v-btn>
-        <v-list two-line>
+        <v-list v-if="productList.length" two-line>
           <v-list-item v-for="product in productList" :key="product.id">
             <v-list-item-avatar>
-              <img :src="product.image" :alt="product.name" />
+              <img :src="product.foto" :alt="product.nome" />
             </v-list-item-avatar>
 
             <v-list-item-content>
               <v-list-item-title>
-                {{ product.name }} ({{ product.quantity }})
+                {{ product.nome }} ({{ product.quantidade }})
               </v-list-item-title>
 
               <v-list-item-subtitle>
                 {{
-                  product.price.toLocaleString("pt-br", {
-                    style: "currency",
-                    currency: "BRL",
-                  })
+                  product.preco
+                    ? product.preco.toLocaleString("pt-br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })
+                    : null
                 }}
-                - {{ product.categoryName }}
+                - Categoria: {{ product.id_categoria }}
               </v-list-item-subtitle>
             </v-list-item-content>
 
@@ -93,10 +95,9 @@
 <script>
 import axios from "axios";
 
-import NewProductDialog from "./NewProductDialog.vue";
-import NewCategoryDialog from "./NewCategoryDialog.vue";
+import NewProductDialog from "./Dialogs/NewProductDialog.vue";
+import NewCategoryDialog from "./Dialogs/NewCategoryDialog.vue";
 
-import productList from "@/placeholders/productList.json";
 import categories from "@/placeholders/categories.json";
 
 export default {
@@ -110,12 +111,16 @@ export default {
     isNewProductDialogVisible: false,
     isNewCategoryDialogVisible: false,
     categories: categories.categories,
-    productList: productList.products,
+    productList: [],
   }),
   mounted() {
     axios
       .get("http://localhost:8080/e-commerce/ListarProdutos")
-      .then((response) => console.log(response.data));
+      .then((response) => {
+        console.log(response.data);
+        this.productList = response.data;
+      })
+      .catch((error) => console.log(error));
   },
 };
 </script>

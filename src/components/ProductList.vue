@@ -11,16 +11,18 @@
           <v-item>
             <v-card class="ma-0" @click="onClickProduct(product)">
               <v-card-text>
-                <v-img :src="product.image" height="200" contain />
+                <v-img :src="product.foto" height="200" contain />
               </v-card-text>
               <v-card-title>
-                {{ product.name }} ({{ product.quantity }})
+                {{ product.nome }} ({{ product.quantidade }})
               </v-card-title>
               <v-card-subtitle>{{
-                product.price.toLocaleString("pt-br", {
-                  style: "currency",
-                  currency: "BRL",
-                })
+                product.preco
+                  ? product.preco.toLocaleString("pt-br", {
+                      style: "currency",
+                      currency: "BRL",
+                    })
+                  : ""
               }}</v-card-subtitle>
             </v-card>
           </v-item>
@@ -37,9 +39,9 @@
 </template>
 
 <script>
-import ProductDialog from "./ProductDialog.vue";
+import axios from "axios";
 
-import productList from "@/placeholders/productList.json";
+import ProductDialog from "./Dialogs/ProductDialog.vue";
 
 export default {
   name: "ProductList",
@@ -47,7 +49,7 @@ export default {
     ProductDialog,
   },
   data: () => ({
-    productList: productList.products,
+    productList: [],
     selectedProduct: {},
     isDialogVisible: false,
   }),
@@ -56,6 +58,15 @@ export default {
       this.selectedProduct = product;
       this.isDialogVisible = true;
     },
+  },
+  mounted() {
+    axios
+      .get("http://localhost:8080/e-commerce/ListarProdutosEmEstoque")
+      .then((response) => {
+        console.log(response.data);
+        this.productList = response.data;
+      })
+      .catch((error) => console.log(error));
   },
 };
 </script>
