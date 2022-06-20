@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="isVisible" width="500">
     <v-card>
-      <v-card-title>Nova Categoria</v-card-title>
+      <v-card-title>Editar Categoria</v-card-title>
 
       <v-card-text>
         <v-text-field
@@ -17,8 +17,8 @@
       <v-card-actions>
         <v-spacer />
         <v-btn color="primary" text @click="closeDialog()"> Cancelar </v-btn>
-        <v-btn color="primary" @click="onCreate()" :disabled="!description">
-          Criar
+        <v-btn color="primary" @click="onEdit()" :disabled="!description">
+          Editar
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -29,9 +29,10 @@
 import axios from "axios";
 
 export default {
-  name: "NewCategoryDialog",
+  name: "EditCategoryDialog",
   props: {
     isDialogVisible: Boolean,
+    selectedCategory: Object,
   },
   data: () => ({
     isVisible: false,
@@ -47,16 +48,19 @@ export default {
         this.$emit("close-dialog");
       }
     },
+    selectedCategory(newValue) {
+      this.description = newValue.descricaoCategoria;
+    },
   },
   methods: {
     closeDialog() {
       this.isVisible = false;
     },
-    onCreate() {
+    onEdit() {
       const data = "descricaoCategoria=" + encodeURIComponent(this.description);
 
       axios
-        .post("http://localhost:8080/e-commerce/NovaCategoria", data)
+        .post("http://localhost:8080/e-commerce/UpdateCategoria", data)
         .then((response) => {
           console.log(response);
         })

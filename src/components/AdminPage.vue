@@ -39,10 +39,20 @@
 
             <v-list-item-action class="d-flex flex-row align-center">
               <v-btn icon>
-                <v-icon color="primary" aria-label="Editar">mdi-pencil</v-icon>
+                <v-icon
+                  color="primary"
+                  aria-label="Editar"
+                  @click="editProduct(product)"
+                  >mdi-pencil</v-icon
+                >
               </v-btn>
               <v-btn icon>
-                <v-icon color="primary" aria-label="Remover">mdi-delete</v-icon>
+                <v-icon
+                  color="primary"
+                  aria-label="Remover"
+                  @click="removeProduct(product.id)"
+                  >mdi-delete</v-icon
+                >
               </v-btn>
             </v-list-item-action>
           </v-list-item>
@@ -64,10 +74,20 @@
 
             <v-list-item-action class="d-flex flex-row align-center">
               <v-btn icon>
-                <v-icon color="primary" aria-label="Editar">mdi-pencil</v-icon>
+                <v-icon
+                  color="primary"
+                  aria-label="Editar"
+                  @click="editCategory(category)"
+                  >mdi-pencil</v-icon
+                >
               </v-btn>
               <v-btn icon>
-                <v-icon color="primary" aria-label="Remover">mdi-delete</v-icon>
+                <v-icon
+                  color="primary"
+                  aria-label="Remover"
+                  @click="removeCategory(category.id)"
+                  >mdi-delete</v-icon
+                >
               </v-btn>
             </v-list-item-action>
           </v-list-item>
@@ -92,6 +112,17 @@
       :isDialogVisible="isNewCategoryDialogVisible"
       @close-dialog="isNewCategoryDialogVisible = false"
     />
+
+    <EditProductDialog
+      :isDialogVisible="isEditProductDialogVisible"
+      :selectedProduct="selectedProduct"
+      @close-dialog="isEditProductDialogVisible = false"
+    />
+    <EditCategoryDialog
+      :isDialogVisible="isEditCategoryDialogVisible"
+      :selectedCategory="selectedCategory"
+      @close-dialog="isEditCategoryDialogVisible = false"
+    />
   </v-container>
 </template>
 
@@ -100,19 +131,27 @@ import axios from "axios";
 
 import NewProductDialog from "./Dialogs/NewProductDialog.vue";
 import NewCategoryDialog from "./Dialogs/NewCategoryDialog.vue";
+import EditProductDialog from "./Dialogs/EditProductDialog.vue";
+import EditCategoryDialog from "./Dialogs/EditCategoryDialog.vue";
 
 export default {
   name: "AdminPage",
   components: {
     NewProductDialog,
     NewCategoryDialog,
+    EditProductDialog,
+    EditCategoryDialog,
   },
   data: () => ({
     tab: null,
     isNewProductDialogVisible: false,
     isNewCategoryDialogVisible: false,
-    categories: [],
+    isEditProductDialogVisible: false,
+    isEditCategoryDialogVisible: false,
     products: [],
+    categories: [],
+    selectedProduct: null,
+    selectedCategory: null,
   }),
   watch: {
     tab(newValue) {
@@ -136,6 +175,34 @@ export default {
         this.products = response.data;
       })
       .catch((error) => console.log(error));
+  },
+  methods: {
+    removeProduct(id) {
+      axios
+        .delete(`http://localhost:8080/e-commerce/DeletarProduto?id=${id}`)
+        .then((response) => {
+          console.log(response.data);
+          this.products = response.data;
+        })
+        .catch((error) => console.log(error));
+    },
+    removeCategory(id) {
+      axios
+        .delete(`http://localhost:8080/e-commerce/DeletarCategoria?id=${id}`)
+        .then((response) => {
+          console.log(response.data);
+          this.products = response.data;
+        })
+        .catch((error) => console.log(error));
+    },
+    editProduct(product) {
+      this.selectedProduct = product;
+      this.isEditProductDialogVisible = true;
+    },
+    editCategory(category) {
+      this.selectedCategory = category;
+      this.isEditCategoryDialogVisible = true;
+    },
   },
 };
 </script>
