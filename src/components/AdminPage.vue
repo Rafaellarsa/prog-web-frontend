@@ -155,7 +155,6 @@ export default {
   }),
   watch: {
     tab(newValue) {
-      console.log(newValue);
       if (newValue == 1 && !this.categories.length) {
         axios
           .get("http://localhost:8080/e-commerce/ListarCategorias")
@@ -171,7 +170,6 @@ export default {
     axios
       .get("http://localhost:8080/e-commerce/ListarProdutos")
       .then((response) => {
-        console.log(response.data);
         this.products = response.data;
       })
       .catch((error) => console.log(error));
@@ -179,20 +177,12 @@ export default {
   methods: {
     removeProduct(id) {
       axios
-        .delete(`http://localhost:8080/e-commerce/DeletarProduto?id=${id}`)
-        .then((response) => {
-          console.log(response.data);
-          this.products = response.data;
-        })
+        .post(`http://localhost:8080/e-commerce/DeletarProduto?id=${id}`)
         .catch((error) => console.log(error));
     },
     removeCategory(id) {
       axios
-        .delete(`http://localhost:8080/e-commerce/DeletarCategoria?id=${id}`)
-        .then((response) => {
-          console.log(response.data);
-          this.products = response.data;
-        })
+        .post(`http://localhost:8080/e-commerce/DeletarCategoria?id=${id}`)
         .catch((error) => console.log(error));
     },
     editProduct(product) {

@@ -63,7 +63,6 @@ export default {
     axios
       .get("http://localhost:8080/e-commerce/ListarProdutosEmEstoque")
       .then((response) => {
-        console.log(response.data);
         this.productList = response.data;
       })
       .catch((error) => console.log(error));

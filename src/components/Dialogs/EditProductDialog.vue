@@ -118,7 +118,7 @@ export default {
       data = data.slice(0, -1);
 
       axios
-        .put("http://localhost:8080/e-commerce/AtualizarProduto", data)
+        .post("http://localhost:8080/e-commerce/AtualizarProduto", data)
         .then((response) => {
           console.log(response);
         })

@@ -57,10 +57,14 @@ export default {
       this.isVisible = false;
     },
     onEdit() {
-      const data = "descricaoCategoria=" + encodeURIComponent(this.description);
+      const data =
+        "id=" +
+        this.selectedCategory.id +
+        "&descricao_categoria=" +
+        encodeURIComponent(this.description);
 
       axios
-        .post("http://localhost:8080/e-commerce/UpdateCategoria", data)
+        .post("http://localhost:8080/e-commerce/AtualizarCategoria", data)
         .then((response) => {
           console.log(response);
         })
