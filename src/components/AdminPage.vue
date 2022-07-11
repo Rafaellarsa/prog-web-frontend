@@ -180,7 +180,6 @@ export default {
       axios
         .get("http://localhost:8080/e-commerce/ListarCategorias")
         .then((response) => {
-          console.log(response.data);
           this.categories = response.data;
         })
         .catch((error) => console.log(error));

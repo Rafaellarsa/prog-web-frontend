@@ -39,7 +39,7 @@
 
     <v-main>
       <AdminPage v-if="user.administrador" />
-      <ProductList v-else />
+      <ProductList @add-to-cart="(product) => addToCart(product)" v-else />
     </v-main>
 
     <LoginDialog
@@ -55,8 +55,9 @@
     />
     <ShoppingCartDialog
       :isDialogVisible="isShoppingCartDialogVisible"
+      :products="shoppingCartList"
+      :user="user"
       @close-dialog="isShoppingCartDialogVisible = false"
-      :products="[]"
     />
   </v-app>
 </template>
@@ -85,6 +86,7 @@ export default {
     isUserDialogVisible: false,
     isShoppingCartDialogVisible: false,
     user: { administrador: false },
+    shoppingCartList: [],
   }),
   methods: {
     onLogin(user) {
@@ -93,13 +95,23 @@ export default {
     logout() {
       axios
         .delete("http://localhost:8080/e-commerce/Logout")
-        .then((response) => {
-          console.log(response);
-        })
         .catch((error) => console.log(error))
         .finally(() => {
           this.user = { administrador: false };
         });
+    },
+    addToCart(product) {
+      const index = this.shoppingCartList.findIndex(
+        (cartProduct) => cartProduct.id == product.id
+      );
+      if (index > -1) {
+        let quantity = this.shoppingCartList[index].quantity + product.quantity;
+        if (quantity > product.quantidade) quantity = product.quantidade;
+        if (quantity > 10) quantity = 10;
+        this.shoppingCartList[index].quantity = quantity;
+      } else {
+        this.shoppingCartList.push(product);
+      }
     },
   },
 };

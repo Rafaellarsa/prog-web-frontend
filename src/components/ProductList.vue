@@ -34,6 +34,7 @@
       :isDialogVisible="isDialogVisible"
       :selectedProduct="selectedProduct"
       @close-dialog="isDialogVisible = false"
+      @add-to-cart="(product) => $emit('add-to-cart', product)"
     />
   </v-item-group>
 </template>

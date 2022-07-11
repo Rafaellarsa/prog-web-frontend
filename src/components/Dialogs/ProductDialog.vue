@@ -38,7 +38,7 @@
       <v-card-actions>
         <v-spacer />
         <v-btn color="primary" text @click="closeDialog()"> Cancelar </v-btn>
-        <v-btn color="primary" @click="closeDialog()"> Comprar </v-btn>
+        <v-btn color="primary" @click="addToCart()"> Adicionar </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -78,6 +78,13 @@ export default {
     },
   },
   methods: {
+    addToCart() {
+      this.$emit("add-to-cart", {
+        ...this.selectedProduct,
+        quantity: this.selectedQuantity,
+      });
+      this.closeDialog();
+    },
     closeDialog() {
       this.isVisible = false;
     },
