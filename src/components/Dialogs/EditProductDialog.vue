@@ -119,11 +119,9 @@ export default {
 
       axios
         .post("http://localhost:8080/e-commerce/AtualizarProduto", data)
-        .then((response) => {
-          console.log(response);
-        })
         .catch((error) => console.log(error))
         .finally(() => {
+          this.$emit("reload-products");
           this.closeDialog();
         });
     },

@@ -107,21 +107,25 @@
     <NewProductDialog
       :isDialogVisible="isNewProductDialogVisible"
       @close-dialog="isNewProductDialogVisible = false"
+      @reload-products="loadProducts()"
     />
     <NewCategoryDialog
       :isDialogVisible="isNewCategoryDialogVisible"
       @close-dialog="isNewCategoryDialogVisible = false"
+      @reload-categories="loadCategories()"
     />
 
     <EditProductDialog
       :isDialogVisible="isEditProductDialogVisible"
       :selectedProduct="selectedProduct"
       @close-dialog="isEditProductDialogVisible = false"
+      @reload-products="loadProducts()"
     />
     <EditCategoryDialog
       :isDialogVisible="isEditCategoryDialogVisible"
       :selectedCategory="selectedCategory"
       @close-dialog="isEditCategoryDialogVisible = false"
+      @reload-categories="loadCategories()"
     />
   </v-container>
 </template>
@@ -156,34 +160,46 @@ export default {
   watch: {
     tab(newValue) {
       if (newValue == 1 && !this.categories.length) {
-        axios
-          .get("http://localhost:8080/e-commerce/ListarCategorias")
-          .then((response) => {
-            console.log(response.data);
-            this.categories = response.data;
-          })
-          .catch((error) => console.log(error));
+        this.loadCategories();
       }
     },
   },
   mounted() {
-    axios
-      .get("http://localhost:8080/e-commerce/ListarProdutos")
-      .then((response) => {
-        this.products = response.data;
-      })
-      .catch((error) => console.log(error));
+    this.loadProducts();
   },
   methods: {
+    loadProducts() {
+      axios
+        .get("http://localhost:8080/e-commerce/ListarProdutos")
+        .then((response) => {
+          this.products = response.data;
+        })
+        .catch((error) => console.log(error));
+    },
+    loadCategories() {
+      axios
+        .get("http://localhost:8080/e-commerce/ListarCategorias")
+        .then((response) => {
+          console.log(response.data);
+          this.categories = response.data;
+        })
+        .catch((error) => console.log(error));
+    },
     removeProduct(id) {
       axios
         .post(`http://localhost:8080/e-commerce/DeletarProduto?id=${id}`)
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(error))
+        .finally(() => {
+          this.loadProducts();
+        });
     },
     removeCategory(id) {
       axios
         .post(`http://localhost:8080/e-commerce/DeletarCategoria?id=${id}`)
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(error))
+        .finally(() => {
+          this.loadCategories();
+        });
     },
     editProduct(product) {
       this.selectedProduct = product;

@@ -57,11 +57,9 @@ export default {
 
       axios
         .post("http://localhost:8080/e-commerce/NovaCategoria", data)
-        .then((response) => {
-          console.log(response);
-        })
         .catch((error) => console.log(error))
         .finally(() => {
+          this.$emit("reload-categories");
           this.closeDialog();
         });
     },

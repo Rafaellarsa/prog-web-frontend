@@ -24,7 +24,11 @@
         </span>
         <span v-else id="login-link" @click="logout()"> Sair </span>
       </span>
-      <v-btn v-if="!user.administrador" href="" target="_blank" text>
+      <v-btn
+        v-if="!user.administrador"
+        text
+        @click="isShoppingCartDialogVisible = true"
+      >
         <v-icon aria-label="Carrinho de compras">mdi-cart</v-icon>
         0
       </v-btn>
@@ -49,6 +53,11 @@
       @close-dialog="isUserDialogVisible = false"
       @login="onLogin"
     />
+    <ShoppingCartDialog
+      :isDialogVisible="isShoppingCartDialogVisible"
+      @close-dialog="isShoppingCartDialogVisible = false"
+      :products="[]"
+    />
   </v-app>
 </template>
 
@@ -59,6 +68,7 @@ import ProductList from "./components/ProductList.vue";
 import AdminPage from "./components/AdminPage.vue";
 import LoginDialog from "./components/Dialogs/LoginDialog.vue";
 import UserDialog from "./components/Dialogs/UserDialog.vue";
+import ShoppingCartDialog from "./components/Dialogs/ShoppingCartDialog.vue";
 
 export default {
   name: "e-smd",
@@ -67,11 +77,13 @@ export default {
     AdminPage,
     LoginDialog,
     UserDialog,
+    ShoppingCartDialog,
   },
 
   data: () => ({
     isLoginDialogVisible: false,
     isUserDialogVisible: false,
+    isShoppingCartDialogVisible: false,
     user: { administrador: false },
   }),
   methods: {
