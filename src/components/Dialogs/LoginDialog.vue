@@ -173,7 +173,7 @@ export default {
       data = data.slice(0, -1);
 
       axios
-        .post("http://localhost:8081/e-commerce/LoginCliente", data)
+        .post("http://localhost:8080/e-commerce/LoginCliente", data)
         .then((response) => {
           const user = response.data.usuario;
           this.$emit("login", user);
@@ -192,7 +192,7 @@ export default {
         data = data.slice(0, -1);
 
         axios
-          .post("http://localhost:8081/e-commerce/NovoCliente", data)
+          .post("http://localhost:8080/e-commerce/NovoCliente", data)
           .then((response) => {
             console.log(response);
           })

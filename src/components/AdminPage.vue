@@ -183,7 +183,7 @@ export default {
   methods: {
     loadProducts() {
       axios
-        .get("http://localhost:8081/e-commerce/ListarProdutos")
+        .get("http://localhost:8080/e-commerce/ListarProdutos")
         .then((response) => {
           this.products = response.data;
         })
@@ -191,7 +191,7 @@ export default {
     },
     loadCategories() {
       axios
-        .get("http://localhost:8081/e-commerce/ListarCategorias")
+        .get("http://localhost:8080/e-commerce/ListarCategorias")
         .then((response) => {
           this.categories = response.data;
         })
@@ -199,7 +199,7 @@ export default {
     },
     loadRelatorios() {
       axios
-        .get("http://localhost:8081/e-commerce/Relatorios")
+        .get("http://localhost:8080/e-commerce/Relatorios")
         .then((response) => {
           this.relatorios = response.data;
           console.log(this.relatorios)
@@ -208,7 +208,7 @@ export default {
     },
     removeProduct(id) {
       axios
-        .post(`http://localhost:8081/e-commerce/DeletarProduto?id=${id}`)
+        .post(`http://localhost:8080/e-commerce/DeletarProduto?id=${id}`)
         .catch((error) => console.log(error))
         .finally(() => {
           this.loadProducts();
@@ -216,7 +216,7 @@ export default {
     },
     removeCategory(id) {
       axios
-        .post(`http://localhost:8081/e-commerce/DeletarCategoria?id=${id}`)
+        .post(`http://localhost:8080/e-commerce/DeletarCategoria?id=${id}`)
         .catch((error) => console.log(error))
         .finally(() => {
           this.loadCategories();

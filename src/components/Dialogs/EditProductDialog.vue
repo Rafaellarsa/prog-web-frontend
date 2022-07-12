@@ -118,7 +118,7 @@ export default {
       data = data.slice(0, -1);
 
       axios
-        .post("http://localhost:8081/e-commerce/AtualizarProduto", data)
+        .post("http://localhost:8080/e-commerce/AtualizarProduto", data)
         .catch((error) => console.log(error))
         .finally(() => {
           this.$emit("reload-products");
