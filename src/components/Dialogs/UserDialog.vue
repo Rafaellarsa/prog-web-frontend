@@ -117,7 +117,7 @@ export default {
         data = data.slice(0, -1);
 
         axios
-          .put("http://localhost:8080/e-commerce/AtualizarCliente", data)
+          .put("http://localhost:8081/e-commerce/AtualizarCliente", data)
           .then((response) => {
             console.log(response);
           })
@@ -132,7 +132,7 @@ export default {
     onRemove() {
       axios
         .delete(
-          `http://localhost:8080/e-commerce/DeletarCliente?id_produto=${this.userInfo.id}`
+          `http://localhost:8081/e-commerce/DeletarCliente?id_produto=${this.userInfo.id}`
         )
         .then((response) => {
           console.log(response);

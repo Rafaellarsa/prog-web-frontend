@@ -64,7 +64,7 @@ export default {
         encodeURIComponent(this.description);
 
       axios
-        .post("http://localhost:8080/e-commerce/AtualizarCategoria", data)
+        .post("http://localhost:8081/e-commerce/AtualizarCategoria", data)
         .catch((error) => console.log(error))
         .finally(() => {
           this.$emit("reload-categories");

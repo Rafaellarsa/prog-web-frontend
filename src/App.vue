@@ -94,7 +94,7 @@ export default {
     },
     logout() {
       axios
-        .delete("http://localhost:8080/e-commerce/Logout")
+        .delete("http://localhost:8081/e-commerce/Logout")
         .catch((error) => console.log(error))
         .finally(() => {
           this.user = { administrador: false };

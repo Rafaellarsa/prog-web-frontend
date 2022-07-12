@@ -101,7 +101,18 @@
         </v-btn>
       </v-tab-item>
 
-      <v-tab-item> Visualizar relatórios gerenciais </v-tab-item>
+      <v-tab-item>
+        Relatórios
+        <v-list v-if="relatorios.length" two-line>
+          <v-list-item v-for="relatorio in relatorios" :key="relatorio.id">
+            <v-list-item-content>
+              <v-list-item-title>
+                 {{relatorio.movimentacao}} do produto {{relatorio.nome_produto}} de id {{ relatorio.id }} em {{ relatorio.quantidade }} quantidades na data {{relatorio.data_hora_venda}}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-tab-item>
     </v-tabs-items>
 
     <NewProductDialog
@@ -154,6 +165,7 @@ export default {
     isEditCategoryDialogVisible: false,
     products: [],
     categories: [],
+    relatorios: [],
     selectedProduct: null,
     selectedCategory: null,
   }),
@@ -166,11 +178,12 @@ export default {
   },
   mounted() {
     this.loadProducts();
+    this.loadRelatorios();
   },
   methods: {
     loadProducts() {
       axios
-        .get("http://localhost:8080/e-commerce/ListarProdutos")
+        .get("http://localhost:8081/e-commerce/ListarProdutos")
         .then((response) => {
           this.products = response.data;
         })
@@ -178,15 +191,24 @@ export default {
     },
     loadCategories() {
       axios
-        .get("http://localhost:8080/e-commerce/ListarCategorias")
+        .get("http://localhost:8081/e-commerce/ListarCategorias")
         .then((response) => {
           this.categories = response.data;
         })
         .catch((error) => console.log(error));
     },
+    loadRelatorios() {
+      axios
+        .get("http://localhost:8081/e-commerce/Relatorios")
+        .then((response) => {
+          this.relatorios = response.data;
+          console.log(this.relatorios)
+        })
+        .catch((error) => console.log(error));
+    },
     removeProduct(id) {
       axios
-        .post(`http://localhost:8080/e-commerce/DeletarProduto?id=${id}`)
+        .post(`http://localhost:8081/e-commerce/DeletarProduto?id=${id}`)
         .catch((error) => console.log(error))
         .finally(() => {
           this.loadProducts();
@@ -194,7 +216,7 @@ export default {
     },
     removeCategory(id) {
       axios
-        .post(`http://localhost:8080/e-commerce/DeletarCategoria?id=${id}`)
+        .post(`http://localhost:8081/e-commerce/DeletarCategoria?id=${id}`)
         .catch((error) => console.log(error))
         .finally(() => {
           this.loadCategories();
@@ -207,7 +229,7 @@ export default {
     editCategory(category) {
       this.selectedCategory = category;
       this.isEditCategoryDialogVisible = true;
-    },
+    }
   },
 };
 </script>
