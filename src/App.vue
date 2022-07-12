@@ -39,7 +39,12 @@
 
     <v-main>
       <AdminPage v-if="user.administrador" />
-      <ProductList @add-to-cart="(product) => addToCart(product)" v-else />
+      <ProductList
+        :productList="productList"
+        @load-products="loadProducts()"
+        @add-to-cart="(product) => addToCart(product)"
+        v-else
+      />
     </v-main>
 
     <LoginDialog
@@ -58,6 +63,7 @@
       :products="shoppingCartList"
       :user="user"
       @remove-from-cart="removeFromCart"
+      @load-products="loadProducts()"
       @close-dialog="isShoppingCartDialogVisible = false"
     />
   </v-app>
@@ -87,6 +93,7 @@ export default {
     isShoppingCartDialogVisible: false,
     user: { administrador: false },
     shoppingCartList: [],
+    productList: [],
   }),
   computed: {
     productsTotal() {
@@ -96,6 +103,14 @@ export default {
     },
   },
   methods: {
+    loadProducts() {
+      axios
+        .get("http://localhost:8080/e-commerce/ListarProdutosEmEstoque")
+        .then((response) => {
+          this.productList = response.data;
+        })
+        .catch((error) => console.log(error));
+    },
     onLogin(user) {
       this.user = user;
     },

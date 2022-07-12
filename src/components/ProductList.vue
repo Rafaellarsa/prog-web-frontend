@@ -40,8 +40,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 import ProductDialog from "./Dialogs/ProductDialog.vue";
 
 export default {
@@ -49,8 +47,10 @@ export default {
   components: {
     ProductDialog,
   },
+  props: {
+    productList: Array,
+  },
   data: () => ({
-    productList: [],
     selectedProduct: {},
     isDialogVisible: false,
   }),
@@ -61,12 +61,7 @@ export default {
     },
   },
   mounted() {
-    axios
-      .get("http://localhost:8080/e-commerce/ListarProdutosEmEstoque")
-      .then((response) => {
-        this.productList = response.data;
-      })
-      .catch((error) => console.log(error));
+    this.$emit("load-products");
   },
 };
 </script>
