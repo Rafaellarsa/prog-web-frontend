@@ -62,7 +62,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:8081/e-commerce/ListarProdutosEmEstoque")
+      .get("http://localhost:8080/e-commerce/ListarProdutosEmEstoque")
       .then((response) => {
         this.productList = response.data;
       })

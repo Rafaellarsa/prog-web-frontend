@@ -193,12 +193,10 @@ export default {
 
         axios
           .post("http://localhost:8080/e-commerce/NovoCliente", data)
-          .then((response) => {
-            console.log(response);
-          })
           .catch((error) => console.log(error))
           .finally(() => {
             this.isVisible = false;
+            this.isSignUpForm = false;
           });
       } else {
         console.log("As senhas devem coincidir");

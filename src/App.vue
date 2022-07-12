@@ -30,7 +30,7 @@
         @click="isShoppingCartDialogVisible = true"
       >
         <v-icon aria-label="Carrinho de compras">mdi-cart</v-icon>
-        0
+        {{ productsTotal }}
       </v-btn>
       <v-btn v-if="user.login" text @click="isUserDialogVisible = true">
         <v-icon aria-label="Engrenagem">mdi-cog</v-icon>
@@ -57,6 +57,7 @@
       :isDialogVisible="isShoppingCartDialogVisible"
       :products="shoppingCartList"
       :user="user"
+      @remove-from-cart="removeFromCart"
       @close-dialog="isShoppingCartDialogVisible = false"
     />
   </v-app>
@@ -80,7 +81,6 @@ export default {
     UserDialog,
     ShoppingCartDialog,
   },
-
   data: () => ({
     isLoginDialogVisible: false,
     isUserDialogVisible: false,
@@ -88,13 +88,20 @@ export default {
     user: { administrador: false },
     shoppingCartList: [],
   }),
+  computed: {
+    productsTotal() {
+      return this.shoppingCartList.reduce((sum, product) => {
+        return sum + product.quantity;
+      }, 0);
+    },
+  },
   methods: {
     onLogin(user) {
       this.user = user;
     },
     logout() {
       axios
-        .delete("http://localhost:8081/e-commerce/Logout")
+        .delete("http://localhost:8080/e-commerce/Logout")
         .catch((error) => console.log(error))
         .finally(() => {
           this.user = { administrador: false };
@@ -112,6 +119,9 @@ export default {
       } else {
         this.shoppingCartList.push(product);
       }
+    },
+    removeFromCart(index) {
+      this.shoppingCartList.splice(index, 1);
     },
   },
 };

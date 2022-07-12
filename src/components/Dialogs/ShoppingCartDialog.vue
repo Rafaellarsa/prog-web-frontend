@@ -10,7 +10,7 @@
           </v-col>
 
           <v-list v-else two-line width="100%">
-            <v-list-item v-for="product in products" :key="product.id">
+            <v-list-item v-for="(product, index) in products" :key="product.id">
               <v-list-item-avatar>
                 <img :src="product.foto" :alt="product.nome" />
               </v-list-item-avatar>
@@ -44,7 +44,7 @@
                   <v-icon
                     color="primary"
                     aria-label="Remover"
-                    @click="removeProduct(product.id)"
+                    @click="removeProduct(index)"
                     >mdi-delete</v-icon
                   >
                 </v-btn>
@@ -61,7 +61,7 @@
         <v-btn color="primary" text @click="closeDialog()"> Cancelar </v-btn>
         <v-btn
           color="primary"
-          :disabled="!user.login || !products.length"
+          :disabled="user.id == undefined || !products.length"
           @click="proceed()"
         >
           Prosseguir
@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "ShoppingCartDialog",
   props: {
@@ -97,9 +99,31 @@ export default {
       const maximumQuantity = quantity > 10 ? 10 : quantity;
       return Array.from(Array(maximumQuantity), (element, index) => index + 1);
     },
+    removeProduct(index) {
+      this.$emit("remove-from-cart", index);
+    },
     proceed() {
-      console.log(this.products);
-      this.closeDialog();
+      const productIds = this.products.reduce((idsArray, product) => {
+        return [...idsArray, ...Array(product.quantity).fill(product.id)];
+      }, []);
+
+      const dataObject = {
+        id_cliente_venda: this.user.id,
+        ids_produto_venda: productIds,
+      };
+
+      let data = "";
+      for (let [key, value] of Object.entries(dataObject)) {
+        data += key + "=" + encodeURIComponent(value) + "&";
+      }
+      data = data.slice(0, -1);
+
+      axios
+        .post("http://localhost:8080/e-commerce/EfetuarVenda", data)
+        .catch((error) => console.log(error))
+        .finally(() => {
+          this.closeDialog();
+        });
     },
     closeDialog() {
       this.isVisible = false;
